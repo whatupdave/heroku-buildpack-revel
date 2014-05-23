@@ -3,4 +3,15 @@
 
 set -eo pipefail
 
+build=$(cd "$1/" && pwd)
+cache=$(cd "$2/" && pwd)
+
+name=$(<$build/Godeps jq -r .ImportPath)
+ver=$(<$build/Godeps jq -r .GoVersion)
+
+GOBIN=$build/bin export GOBIN
+GOROOT=$cache/$ver/go export GOROOT
+GOPATH=$build/.heroku/g export GOPATH
+PATH=$GOROOT/bin:$PATH
+
 go get github.com/revel/cmd/revel
