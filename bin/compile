@@ -6,6 +6,9 @@ set -eo pipefail
 build=$(cd "$1/" && pwd)
 cache=$(cd "$2/" && pwd)
 
+plat=$(uname|tr A-Z a-z)-$arch
+PATH=$buildpack/$plat/bin:$PATH
+
 name=$(<$build/Godeps jq -r .ImportPath)
 ver=$(<$build/Godeps jq -r .GoVersion)
 
